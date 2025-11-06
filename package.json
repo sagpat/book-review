@@ -1,0 +1,95 @@
+{
+  "name": "book-review-suite",
+  "version": "1.0.0",
+  "description": "Full-stack book review application with microservice architecture",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install && npm run install:frontend && npm run install:backend && npm run install:microservice",
+    "install:frontend": "cd book-review-app && npm install",
+    "install:backend": "cd book-review-backend && npm install",
+    "install:microservice": "cd book-review-recommended-backend && npm install",
+    
+    "dev": "./start-services.sh",
+    "start": "npm run dev",
+    
+    "dev:frontend": "cd book-review-app && npm run dev",
+    "dev:backend": "cd book-review-backend && npm run dev",
+    "dev:microservice": "cd book-review-recommended-backend && npm run dev",
+    
+    "build": "npm run build:frontend && npm run build:backend && npm run build:microservice",
+    "build:frontend": "cd book-review-app && npm run build",
+    "build:backend": "cd book-review-backend && npm run build",
+    "build:microservice": "cd book-review-recommended-backend && npm run build",
+    
+    "lint": "npm run lint:frontend && npm run lint:backend && npm run lint:microservice",
+    "lint:fix": "npm run lint:fix:frontend && npm run lint:fix:backend && npm run lint:fix:microservice",
+    "lint:frontend": "cd book-review-app && npm run lint",
+    "lint:backend": "cd book-review-backend && npm run lint",
+    "lint:microservice": "cd book-review-recommended-backend && npm run lint",
+    "lint:fix:frontend": "cd book-review-app && npm run lint:fix",
+    "lint:fix:backend": "cd book-review-backend && npm run lint:fix",
+    "lint:fix:microservice": "cd book-review-recommended-backend && npm run lint:fix",
+    
+    "test": "npm run test:frontend && npm run test:backend && npm run test:microservice",
+    "test:frontend": "cd book-review-app && npm test",
+    "test:backend": "cd book-review-backend && npm test",  
+    "test:microservice": "cd book-review-recommended-backend && npm test",
+    "test:coverage": "cd book-review-recommended-backend && npm run test:coverage",
+    
+    "type-check": "npm run type-check:frontend && npm run type-check:backend && npm run type-check:microservice",
+    "type-check:frontend": "cd book-review-app && npm run type-check",
+    "type-check:backend": "cd book-review-backend && npm run type-check",
+    "type-check:microservice": "cd book-review-recommended-backend && npm run type-check",
+    
+    "clean": "npm run clean:frontend && npm run clean:backend && npm run clean:microservice && npm run clean:logs",
+    "clean:frontend": "cd book-review-app && npm run clean",
+    "clean:backend": "cd book-review-backend && npm run clean", 
+    "clean:microservice": "cd book-review-recommended-backend && npm run clean",
+    "clean:logs": "rm -rf logs/*.log logs/*.pid",
+    
+    "docker:build": "docker-compose build",
+    "docker:up": "docker-compose up",
+    "docker:up:detached": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    
+    "env:setup": "npm run env:setup:frontend && npm run env:setup:backend && npm run env:setup:microservice",
+    "env:setup:frontend": "cp book-review-app/.env.example book-review-app/.env",
+    "env:setup:backend": "cp book-review-backend/.env.example book-review-backend/.env",
+    "env:setup:microservice": "cp book-review-recommended-backend/.env.example book-review-recommended-backend/.env",
+    
+    "health": "curl -f http://localhost:3002/api/health && curl -f http://localhost:3001/api/health",
+    "logs": "tail -f logs/*.log",
+    "stop": "pkill -f 'npm run dev'",
+    
+    "setup": "npm run install:all && npm run env:setup",
+    "reset": "npm run clean && npm run setup"
+  },
+  "keywords": [
+    "book-review",
+    "microservice",
+    "react",
+    "nodejs",
+    "typescript",
+    "full-stack"
+  ],
+  "author": "Book Review Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "workspaces": [
+    "book-review-app",
+    "book-review-backend", 
+    "book-review-recommended-backend"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/your-username/book-review.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/book-review/issues"
+  },
+  "homepage": "https://github.com/your-username/book-review#readme"
+}

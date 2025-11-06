@@ -1,0 +1,123 @@
+# ==============================================================================
+# SAMPLE TERRAFORM VARIABLES - Copy to terraform.tfvars and customize
+# ==============================================================================
+# IMPORTANT: Update all values marked with "CHANGE_ME" before deployment
+# ==============================================================================
+
+# General Configuration
+project_name         = "bookreviews"
+environment         = "prod"
+location           = "East US"
+resource_group_name = "bookreviews-rg"
+
+# Container Registry (MUST BE GLOBALLY UNIQUE)
+acr_name = "bookreviewsacr2024"  # CHANGE_ME: Must be globally unique
+acr_sku  = "Basic"
+
+# AKS Configuration
+aks_name                 = "bookreviews-aks"
+aks_kubernetes_version   = null  # Use latest stable
+aks_node_count          = 2
+aks_node_vm_size        = "Standard_B2s"
+aks_enable_auto_scaling = true
+aks_min_count           = 1
+aks_max_count           = 5
+aks_network_plugin      = "azure"
+
+# Database Configuration (NAMES MUST BE GLOBALLY UNIQUE)
+mysql_server_name    = "bookreviews-mysql-2024"    # CHANGE_ME: Must be globally unique
+mysql_admin_login    = "mysqladmin"
+mysql_admin_password = null  # Will be auto-generated and stored in Key Vault
+mysql_sku_name      = "B_Gen5_1"
+mysql_storage_mb    = 5120
+mysql_version       = "8.0"
+
+cosmos_db_name              = "bookreviews-cosmos-2024"  # CHANGE_ME: Must be globally unique
+cosmos_db_offer_type        = "Standard"
+cosmos_db_consistency_level = "Session"
+
+# App Service Configuration (NAMES MUST BE GLOBALLY UNIQUE)
+app_service_plan_name    = "bookreviews-plan"
+app_service_plan_sku     = "B1"
+app_service_name         = "bookreviews-frontend-2024"  # CHANGE_ME: Must be globally unique
+app_service_node_version = "18-lts"
+
+# Key Vault Configuration (NAME MUST BE GLOBALLY UNIQUE)
+key_vault_name = "bookreviews-kv-2024"  # CHANGE_ME: Must be globally unique
+key_vault_sku  = "standard"
+
+# NGINX Ingress Configuration
+nginx_ingress_namespace    = "ingress-nginx"
+nginx_ingress_replica_count = 2
+cert_manager_namespace     = "cert-manager"
+
+# Network Configuration
+vnet_address_space              = ["10.0.0.0/16"]
+aks_subnet_address_prefix       = "10.0.1.0/24"
+app_service_subnet_address_prefix = "10.0.2.0/24"
+
+# Domain and SSL Configuration
+custom_domain     = "api.bookreviews.com"      # CHANGE_ME: Your actual domain
+letsencrypt_email = "admin@bookreviews.com"    # CHANGE_ME: Your email for SSL certs
+
+# Monitoring Configuration  
+application_insights_name    = "bookreviews-insights"
+log_analytics_workspace_name = "bookreviews-logs"
+
+# Common Tags
+common_tags = {
+  Project     = "BookReviews"
+  Environment = "Production"
+  ManagedBy   = "Terraform"
+  Owner       = "DevOps Team"
+  CostCenter  = "Engineering"
+  Contact     = "admin@bookreviews.com"  # CHANGE_ME: Your contact
+}
+
+# ==============================================================================
+# DEVELOPMENT ENVIRONMENT OVERRIDES (uncomment for dev environment)
+# ==============================================================================
+
+# project_name = "bookreviews-dev"
+# environment = "dev"
+# 
+# # Smaller resources for development
+# aks_node_count = 1
+# aks_node_vm_size = "Standard_B2s"
+# aks_enable_auto_scaling = false
+# mysql_sku_name = "B_Gen5_1"
+# app_service_plan_sku = "F1"  # Free tier
+# acr_sku = "Basic"
+# 
+# common_tags = {
+#   Project     = "BookReviews"
+#   Environment = "Development"
+#   ManagedBy   = "Terraform"
+#   Owner       = "Development Team"
+# }
+
+# ==============================================================================
+# PRODUCTION ENVIRONMENT OVERRIDES (recommended for production)
+# ==============================================================================
+
+# project_name = "bookreviews-prod"
+# environment = "prod"
+#
+# # Production-ready resources
+# aks_node_count = 3
+# aks_node_vm_size = "Standard_D2s_v3"
+# aks_min_count = 2
+# aks_max_count = 10
+# mysql_sku_name = "GP_Gen5_2"
+# mysql_storage_mb = 20480  # 20GB
+# app_service_plan_sku = "P1v2"
+# acr_sku = "Standard"
+#
+# common_tags = {
+#   Project     = "BookReviews"
+#   Environment = "Production"
+#   ManagedBy   = "Terraform"
+#   Owner       = "Platform Team"
+#   CostCenter  = "Production"
+#   Backup      = "Required"
+# }
