@@ -6,3 +6,5 @@
 `docker-compose up -d`
 4. Use any database tool to connect with the db running in docker.
 5. The docker composer file has the connection details.
+
+Update for pipeline.
