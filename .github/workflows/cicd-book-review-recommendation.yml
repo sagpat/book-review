@@ -1,0 +1,37 @@
+name: Book Review Recommendation CI/CD for AKS
+
+env:
+  AZURE_CONTAINER_REGISTRY: azurebookreviewacr.azurecr.io
+  AZURE_CONTAINER_REGISTRY_USERNAME: azurebookreviewacr
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - book-review-recommendation/**
+  workflow_dispatch:
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    - name: Login to Azure
+      uses: azure/login@v1
+      with:
+            creds: ${{ secrets.AZURE_CREDENTIALS }} 
+    - name: Login to Azure Container Registry
+      run: |
+        az acr login --name azurebookreviewacr
+    - name: Build and push recommendation image to Azure Container Registry
+      run: | 
+        cd book-review-recommendation
+        docker build -t ${{ env.AZURE_CONTAINER_REGISTRY }}/book-review-recommendation:${{ github.sha }} .
+        docker push ${{ env.AZURE_CONTAINER_REGISTRY }}/book-review-recommendation:${{ github.sha }}
+    - name: Deploy to AKS
+      run: |
+        az aks get-credentials --resource-group azurebookreview-rg --name azurebookreview-aks
+        kubectl set image deployment/book-review-recommendation-deployment book-review-recommendation=${{ env.AZURE_CONTAINER_REGISTRY }}/book-review-recommendation:${{ github.sha }} -n default
+        kubectl rollout status deployment/book-review-recommendation-deployment -n default  
