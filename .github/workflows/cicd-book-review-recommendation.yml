@@ -8,7 +8,7 @@ on:
     branches:
       - main
     paths:
-      - book-review-recommendation/**
+      - book-review-recommended-backend/**
   workflow_dispatch:
 jobs:
   build-and-deploy:
@@ -27,11 +27,11 @@ jobs:
         az acr login --name azurebookreviewacr
     - name: Build and push recommendation image to Azure Container Registry
       run: | 
-        cd book-review-recommendation
-        docker build -t ${{ env.AZURE_CONTAINER_REGISTRY }}/book-review-recommendation:${{ github.sha }} .
-        docker push ${{ env.AZURE_CONTAINER_REGISTRY }}/book-review-recommendation:${{ github.sha }}
+        cd book-review-recommended-backend
+        docker build -t ${{ env.AZURE_CONTAINER_REGISTRY }}/book-review-recommended-backend:${{ github.sha }} .
+        docker push ${{ env.AZURE_CONTAINER_REGISTRY }}/book-review-recommended-backend:${{ github.sha }}
     - name: Deploy to AKS
       run: |
         az aks get-credentials --resource-group azurebookreview-rg --name azurebookreview-aks
-        kubectl set image deployment/book-review-recommendation-deployment book-review-recommendation=${{ env.AZURE_CONTAINER_REGISTRY }}/book-review-recommendation:${{ github.sha }} -n default
-        kubectl rollout status deployment/book-review-recommendation-deployment -n default  
+        kubectl set image deployment/book-review-recommended-backend-deployment book-review-recommended-backend=${{ env.AZURE_CONTAINER_REGISTRY }}/book-review-recommended-backend:${{ github.sha }} -n default
+        kubectl rollout status deployment/book-review-recommended-backend-deployment -n default  
