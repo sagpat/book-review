@@ -46,7 +46,7 @@ jobs:
 
     - name: Deploy to AKS
       run: |
-        az aks get-credentials --resource-group azurebookreview-rg --name azurebookreview-aks
+        az aks get-credentials --resource-group rg-book-review-prod --name azurebookreview-aks
         kubectl set image deployment/book-review-backend-deployment book-review-backend=${{ env.AZURE_CONTAINER_REGISTRY }}/book-review-backend:${{ github.sha }} -n default
         kubectl rollout status deployment/book-review-backend-deployment -n default
         
