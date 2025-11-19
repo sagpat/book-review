@@ -3,6 +3,7 @@ name: Book Review Backend CI/CD for AKS
 env:
   AZURE_CONTAINER_REGISTRY: azurebookreviewacr.azurecr.io
   AZURE_CONTAINER_REGISTRY_USERNAME: azurebookreviewacr
+
 on:
   push:
     branches:
@@ -10,18 +11,28 @@ on:
     paths:
       - book-review-backend/**
   workflow_dispatch:
+
+# Required for OIDC authentication
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+      
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
-    - name: Login to Azure
-      uses: azure/login@v1
+      
+    - name: Login to Azure using OIDC
+      uses: azure/login@v2
       with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
      
     - name: Login to Azure Container Registry
       run: |
