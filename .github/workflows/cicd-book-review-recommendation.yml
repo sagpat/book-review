@@ -43,6 +43,6 @@ jobs:
         docker push ${{ env.AZURE_CONTAINER_REGISTRY }}/book-review-recommended-backend:${{ github.sha }}
     - name: Deploy to AKS
       run: |
-        az aks get-credentials --resource-group rg-book-review-prod --name azurebookreview-aks
+        az aks get-credentials --resource-group rg-book-review-prod --name book-review-aks
         kubectl set image deployment/book-review-recommended-backend-deployment book-review-recommended-backend=${{ env.AZURE_CONTAINER_REGISTRY }}/book-review-recommended-backend:${{ github.sha }} -n default
         kubectl rollout status deployment/book-review-recommended-backend-deployment -n default  
